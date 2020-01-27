@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.20/datatables.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/main.css">
+
+
+    <script src="https://kit.fontawesome.com/7e3b6f87f5.js" crossorigin="anonymous"></script>
+
+    <title>Formulario - Ejercicio Navent</title>
+</head>
+
+<body>
+    <div id="app" class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-10 col-lg-6">
+                <h3>Lista de usuarios registrados</h3>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-10 col-lg-6">
+                <table id="tabla" class="table table-hover table-striped ">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">NOMBRE</th>
+                            <th scope="col">EDAD</th>
+                            <th scope="col">SEXO</th>
+                            <th scope="col">EMAIL</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(user, index) in usuarios">
+                            <th scope="row">{{ index }}</th>
+                            <td>{{ user.nombre }}</td>
+                            <td>{{ user.edad }}</td>
+                            <td>{{ user.sexo }}</td>
+                            <td>{{ user.email }}</td>
+                            <td><a v-on:click="modificarUsuario(user.id)" style="color: teal" href=""><i
+                                        class="fas fa-edit"></i></a>
+                            </td>
+                            <td><a v-on:click="borrarUsuario(user.id)" style="color: red" href=""><i
+                                        class="far fa-trash-alt"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-10 col-lg-6">
+                <hr>
+                <button type="button" v-on:click="cargarUsuario" id="cargarUsuario"
+                    class="btn btn-success btn-sm float-right">Cargar Usuario</button>
+            </div>
+        </div>
+
+        <!-- Ventana emergente -->
+        <div class="popUp">
+            <div class="popUp-content">
+                <form id="form" class="needs-validation" novalidate>
+                    <div class="form-group">
+                        <label class="form-label" for="inputNombre">Nombre</label>
+                        <input v-model="persona.nombre" type="text" class="form-control" id="inputNombre" required>
+                        <div class="invalid-feedback">
+                            ¿Cuál es tu nombre?
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="inputDate">Fecha de Nacimiento</label>
+                        <input v-model="persona.fechaNac" type="date" class="form-control" id="inputDate" required>
+                        <div class="invalid-feedback">
+                            ¿Cuando naciste?
+                        </div>
+                    </div>
+                    <fieldset class="form-group">
+                        <div class="row">
+                            <legend class="col-form-label col-sm-2 pt-0 form-label">Sexo</legend>
+                            <div class="col-sm-10">
+                                <div class="form-check">
+                                    <input v-model="persona.sexo" class="form-check-input" type="radio"
+                                        name="gridRadios" id="gridRadios1" value="Femenino" required>
+                                    <label class="form-check-label" for="gridRadios1">
+                                        Femenino
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input v-model="persona.sexo" class="form-check-input" type="radio"
+                                        name="gridRadios" id="gridRadios2" value="Masculino" required>
+                                    <label class="form-check-label" for="gridRadios2">
+                                        Masculino
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        <label class="form-label" for="inputEmail">Email address</label>
+                        <input v-model="persona.email" type="email" class="form-control" id="inputEmail"
+                            aria-describedby="emailHelp" required>
+                        <div class="invalid-feedback">
+                            Please provide a valid email.
+                        </div>
+                    </div>
+                    <hr>
+                    <button type="submit" v-on:click="guardarUsuario" id="guardar-btn"
+                        class="btn btn-success btn-sm float-right">GUARDAR</button>
+                    <button type="reset" v-on:click="cancelarBtn" id="cancelar-btn"
+                        class="btn btn-outline-dark btn-sm float-right">CANCELAR</button>
+                </form>
+            </div>
+        </div>
+    </div><!-- Fin del contenedor -->
+
+
+
+
+
+
+
+    <!-- Optional JavaScript -->
+
+
+
+
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <!-- Data Table Script -->
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.20/datatables.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/moment.min.js"></script>
+    <script src="js/main.js"></script>
+
+
+</body>
+
+</html>
